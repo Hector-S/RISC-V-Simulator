@@ -16,7 +16,7 @@
 #define MP_MASK     0xF8000000 //32 = 2^5 = top 5 bits.
 #define MPE_MASK    0x07E00000 //64 = 2^6 = next 6 bits
 #define P_MASK      0x001F8000 //64 = 2^6 = next 6 bits
-#define PE_MASK     0x00007C00 //32 = 2^5 = next 4 bits
+#define PE_MASK     0x00007C00 //32 = 2^5 = next 5 bits
 #define DATA_MASK   0x000003FC //256 = 2^8 = next 8 bits
 
 class SimMemory

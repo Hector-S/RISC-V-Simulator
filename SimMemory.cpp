@@ -88,15 +88,17 @@ SimMemory::~SimMemory()
 uint32_t *SimMemory::GetDataPointer(uint32_t Address)
 {
     //0x00 00 00 00
-    uint32_t MP = Address & MP_MASK;
-    uint32_t MPE = Address & MPE_MASK;
-    uint32_t P = Address & P_MASK;
-    uint32_t PE = Address & PE_MASK;
-    uint32_t DATA = Address & DATA_MASK;
+    //Must update shift values if there's changes in bit length of masks.
+    uint32_t MP = (Address & MP_MASK) >> (32 - 5);
+    uint32_t MPE = (Address & MPE_MASK) >> (32 - 11);
+    uint32_t P = (Address & P_MASK) >> (32 - 17);
+    uint32_t PE = (Address & PE_MASK) >> (32 - 22);
+    uint32_t DATA = (Address & DATA_MASK) >> (32 - 30);
     //PE = 256 4-byte words => 2^8 = next 8 bits used to select word.
     //Last 2 bits used to select byte. Not needed in this function.
     if(!MemoryPartition[MP]) //Allocate MP if it does not exist.
     {
+        printf("CHECK 1\n");
         MemoryPartition[MP] = new SimMemory::MP;
         for(int i = 0; i < MPE_MAX; ++i)
         {
@@ -105,6 +107,7 @@ uint32_t *SimMemory::GetDataPointer(uint32_t Address)
     }
     if(!MemoryPartition[MP]->MPElement[MPE]) //Allocate if MPE does not exist.
     {
+        printf("CHECK 2\n");
         MemoryPartition[MP]->MPElement[MPE] = new SimMemory::MPE;
         for(int i = 0; i < P_MAX; ++i)
         {
@@ -113,14 +116,18 @@ uint32_t *SimMemory::GetDataPointer(uint32_t Address)
     }
     if(!MemoryPartition[MP]->MPElement[MPE]->Page[P]) //Allocate if Page does not exist.
     {
+        printf("CHECK 3\n");
         MemoryPartition[MP]->MPElement[MPE]->Page[P] = new SimMemory::P;
         for(int i = 0; i < PE_MAX; ++i)
         {
             MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[i] = nullptr;
+            printf("%i\n", i);
         }
     }
+    printf("%i %i %i PE[%i]\n", MP, MPE, P, PE);
     if(!MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE]) //Allocate if PE does not exist.
     {
+        printf("CHECK 4\n");
         MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE] = new SimMemory::PE;
     }
     return &MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE]->Data[DATA]; //Return address of data.
