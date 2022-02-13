@@ -127,3 +127,125 @@ uint32_t *SimMemory::GetDataPointer(uint32_t Address)
     return &MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE]->Data[DATA]; //Return address of data.
 }
 
+/*
+    Loads data from memory;
+*/
+uint64_t SimMemory::Load(uint32_t Address, int Type)
+{
+    uint64_t ReturnData = LS_FAIL; //Return failure code if not overwritten.
+    uint64_t Mask = 0; //For holding masks.
+    uint64_t TempData = 0; //To hold extra data.
+    uint32_t *Data = nullptr;
+
+    Data = GetDataPointer(Address);
+    ReturnData = *Data;
+    switch(Type)
+    {
+        case LS_BYTE: //Load a byte.
+            ReturnData = ReturnData >> ((Address & 0x00000003)*8); //Select correct byte of data to return.
+            ReturnData &= 0x000000FF; //Get only 1 byte.
+            break;
+        case LS_HALF: //Load 2 bytes.
+            if((Address & 0x00000003) != 3) //Load 2-bytes. Only 1 GetDataPointer() call needed.
+            {
+                ReturnData = ReturnData >> ((Address & 0x00000003)*8); //Select correct bytes of data to return.
+                ReturnData &= 0x0000FFFF; //Get only 2 bytes.
+            }
+            else
+            {
+                ReturnData = ReturnData >> ((Address & 0x00000003)*8); //Select correct byte of data to return.
+                ReturnData &= 0x000000FF; //Get only 1 byte.
+                Data = GetDataPointer(Address + 4); //Load next word to get next byte.
+                TempData = *Data;
+                TempData &= 0x000000FF; //Isolate byte.
+                ReturnData |= TempData << 8; //Insert byte.
+            }
+            break;
+        case LS_WORD: //Load 4 bytes.
+            if((Address & 0x00000003) != 0) //Need to call GetDataPointer() again.
+            {
+                ReturnData = ReturnData >> ((Address & 0x00000003)*8); //Select wanted bytes.
+
+                Data = GetDataPointer(Address + 4); //Get next word.
+                TempData = *Data;
+                Mask = 0xFFFFFFFF00000000;
+                Mask = (Mask >> ((4 - (Address & 0x00000003))*8)) ^ 0xFFFFFFFF; //Highlight bytes
+                TempData &= Mask;
+                TempData = TempData << (4 - (Address & 0x00000003))*8; //Shift bytes into place.
+                ReturnData |= TempData; //Merge data
+                ReturnData &= 0xFFFFFFFF; //Make sure we're not sending garbage.
+            }
+            //Else all bytes already in ReturnData.
+            break;
+    }
+    return ReturnData; //Return failure code if there's an error for some reason.
+}
+
+/*
+    Stores data into memory.
+*/
+uint64_t SimMemory::Store(uint32_t Address, uint32_t Data, int Type)
+{
+    uint64_t ReturnData = LS_FAIL; //Return failure code if not overwritten.
+    uint64_t Mask = 0; //For holding masks.
+    uint32_t *DataPointer = nullptr;
+    DataPointer = GetDataPointer(Address);
+    switch(Type)
+    {
+        case LS_BYTE: //Store a byte. Assumes Data is only 1 byte.
+            Mask = (0x000000FF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF; //Highlight byte to erase.
+            *DataPointer &= Mask; //Erase byte.
+            *DataPointer |= Data << ((Address & 0x00000003)*8); //Write byte to data.
+            ReturnData = 0; //Success.
+            break;
+        case LS_HALF: //Store 2 bytes. Assumes Data is only 2 bytes.
+            if((Address & 0x00000003) != 3) //Load 2-bytes. Only 1 GetDataPointer() call needed.
+            {
+                Mask = (0x0000FFFF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF; //Highlight bytes to erase.
+                *DataPointer &= Mask; //Erase bytes.
+                *DataPointer |= Data << ((Address & 0x00000003)*8); //Write bytes to data.
+            }
+            else
+            {
+                Mask = (0x000000FF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF; //Highlight byte to erase.
+                *DataPointer &= Mask; //Erase byte.
+                *DataPointer |= (Data & 0x000000FF) << ((Address & 0x00000003)*8); //Write byte to data.
+
+                DataPointer = GetDataPointer(Address + 4); //Load next word to store next byte.
+                Data = Data >> 8; //Get only second byte.
+                *DataPointer &= 0xFFFFFF00; //Erase byte.
+                *DataPointer |= Data; //Write byte to data.
+            }
+            ReturnData = 0; //Success.
+            break;
+        case LS_WORD: //Store 4 bytes.
+            if((Address & 0x00000003) != 0) //Need to call GetDataPointer() again.
+            {
+                Mask = 0xFFFFFFFF << ((4 - (Address & 0x00000003))*8); //Highlight bytes to erase.
+                *DataPointer &= Mask; //Erase bytes.
+                *DataPointer |= (Data & (Mask ^ 0xFFFFFFFF)) << ((Address & 0x00000003)*8); //Write bytes to data.
+
+                DataPointer = GetDataPointer(Address + 4); //Load next word to store next bytes.
+                Data = Data >> (4 - (Address & 0x00000003))*8; //Shift leftover bytes into place.
+                *DataPointer |= Data;
+            }
+            else //No bit manipulation needed
+            {
+                *DataPointer = Data; //Store word.
+            }
+            ReturnData = 0; //Success.
+            break;
+    }
+    return ReturnData;
+}
+
+
+
+
+
+
+
+
+
+
+

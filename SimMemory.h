@@ -3,7 +3,10 @@
 
 #include <cstdint>
 
-#define LSTR_FAIL 0xF0F0F0F0F0F0F0F0 //If this value is returned, there was an error.
+#define LS_FAIL 0xF0F0F0F0F0F0F0F0 //If this value is returned, there was an error.
+#define LS_WORD 0 //Load/Store 4-byte Word.
+#define LS_HALF 1 //Load/Store 2-byte Half.
+#define LS_BYTE 2 //Load/Store 1 byte.
 
 #define MP_MAX 32
 #define MPE_MAX 64
@@ -24,7 +27,7 @@ class SimMemory
     public:
         SimMemory(); //Constructor
         ~SimMemory(); //Destructor
-        uint32_t *GetDataPointer(uint32_t Address); //Returns pointer to Data at given Address. Will allocate memory if needed.
+        uint32_t *GetDataPointer(uint32_t Address); //Returns pointer to data at given Address. Will allocate memory if needed.
         uint64_t Load(uint32_t Address, int Type); //Loads data from memory
         uint64_t Store(uint32_t Address, uint32_t Data, int Type); //Stores data into memory
     private:
