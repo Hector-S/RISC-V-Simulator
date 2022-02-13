@@ -98,7 +98,6 @@ uint32_t *SimMemory::GetDataPointer(uint32_t Address)
     //Last 2 bits used to select byte. Not needed in this function.
     if(!MemoryPartition[MP]) //Allocate MP if it does not exist.
     {
-        printf("CHECK 1\n");
         MemoryPartition[MP] = new SimMemory::MP;
         for(int i = 0; i < MPE_MAX; ++i)
         {
@@ -107,7 +106,6 @@ uint32_t *SimMemory::GetDataPointer(uint32_t Address)
     }
     if(!MemoryPartition[MP]->MPElement[MPE]) //Allocate if MPE does not exist.
     {
-        printf("CHECK 2\n");
         MemoryPartition[MP]->MPElement[MPE] = new SimMemory::MPE;
         for(int i = 0; i < P_MAX; ++i)
         {
@@ -116,18 +114,14 @@ uint32_t *SimMemory::GetDataPointer(uint32_t Address)
     }
     if(!MemoryPartition[MP]->MPElement[MPE]->Page[P]) //Allocate if Page does not exist.
     {
-        printf("CHECK 3\n");
         MemoryPartition[MP]->MPElement[MPE]->Page[P] = new SimMemory::P;
         for(int i = 0; i < PE_MAX; ++i)
         {
             MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[i] = nullptr;
-            printf("%i\n", i);
         }
     }
-    printf("%i %i %i PE[%i]\n", MP, MPE, P, PE);
     if(!MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE]) //Allocate if PE does not exist.
     {
-        printf("CHECK 4\n");
         MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE] = new SimMemory::PE;
     }
     return &MemoryPartition[MP]->MPElement[MPE]->Page[P]->PageElement[PE]->Data[DATA]; //Return address of data.
