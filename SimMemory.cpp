@@ -168,10 +168,8 @@ uint64_t SimMemory::Load(uint32_t Address, int Type)
 
                 Data = GetDataPointer(Address + 4); //Get next word.
                 TempData = *Data;
-                Mask = 0xFFFFFFFF00000000;
-                Mask = (Mask >> ((4 - (Address & 0x00000003))*8)) ^ 0xFFFFFFFF; //Highlight bytes
-                TempData &= Mask;
-                TempData = TempData << (4 - (Address & 0x00000003))*8; //Shift bytes into place.
+                Mask = (0xFFFFFFFF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF;
+                TempData &= Mask << ((4 - (Address & 0x00000003))*8);
                 ReturnData |= TempData; //Merge data
                 ReturnData &= 0xFFFFFFFF; //Make sure we're not sending garbage.
             }
@@ -223,12 +221,12 @@ uint64_t SimMemory::Store(uint32_t Address, uint32_t Data, int Type)
         case LS_WORD: //Store 4 bytes.
             if((Address & 0x00000003) != 0) //Need to call GetDataPointer() again.
             {
-                Mask = 0xFFFFFFFF << ((4 - (Address & 0x00000003))*8); //Highlight bytes to erase.
-                *DataPointer &= Mask; //Erase bytes.
-                *DataPointer |= (Data & (Mask ^ 0xFFFFFFFF)) << ((Address & 0x00000003)*8); //Write bytes to data.
+                Mask = 0xFFFFFFFF << ((Address & 0x00000003)*8); //Highlight bytes to erase.
+                *DataPointer &= Mask ^ 0xFFFFFFFF; //Erase bytes.
+                *DataPointer |= Data << ((Address & 0x00000003)*8); //Write bytes to data.
 
                 DataPointer = GetDataPointer(Address + 4); //Load next word to store next bytes.
-                Data = Data >> (4 - (Address & 0x00000003))*8; //Shift leftover bytes into place.
+                Data = Data; //Shift leftover bytes into place.
                 *DataPointer |= Data;
             }
             else //No bit manipulation needed
