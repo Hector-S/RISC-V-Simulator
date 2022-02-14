@@ -209,9 +209,9 @@ uint64_t SimMemory::Store(uint32_t Address, uint32_t Data, int Type)
             }
             else
             {
-                Mask = (0x000000FF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF; //Highlight byte to erase.
+                Mask = 0x00FFFFFF; //Highlight byte to erase.
                 *DataPointer &= Mask; //Erase byte.
-                *DataPointer |= (Data & 0x000000FF) << ((Address & 0x00000003)*8); //Write byte to data.
+                *DataPointer |= (Data & 0x000000FF) << (3*8); //Write byte to data.
 
                 DataPointer = GetDataPointer(Address + 4); //Load next word to store next byte.
                 Data = Data >> 8; //Get only second byte.
