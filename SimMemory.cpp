@@ -192,13 +192,15 @@ uint64_t SimMemory::Store(uint32_t Address, uint32_t Data, int Type)
     DataPointer = GetDataPointer(Address);
     switch(Type)
     {
-        case LS_BYTE: //Store a byte. Assumes Data is only 1 byte.
+        case LS_BYTE: //Store a byte.
+            Data &= 0x000000FF;
             Mask = (0x000000FF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF; //Highlight byte to erase.
             *DataPointer &= Mask; //Erase byte.
             *DataPointer |= Data << ((Address & 0x00000003)*8); //Write byte to data.
             ReturnData = 0; //Success.
             break;
-        case LS_HALF: //Store 2 bytes. Assumes Data is only 2 bytes.
+        case LS_HALF: //Store 2 bytes.
+            Data &= 0x0000FFFF;
             if((Address & 0x00000003) != 3) //Load 2-bytes. Only 1 GetDataPointer() call needed.
             {
                 Mask = (0x0000FFFF << ((Address & 0x00000003)*8)) ^ 0xFFFFFFFF; //Highlight bytes to erase.
