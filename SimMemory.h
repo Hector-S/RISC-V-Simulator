@@ -1,6 +1,10 @@
 #ifndef SIMMEMORY_H_INCLUDED
 #define SIMMEMORY_H_INCLUDED
 
+/*
+    Created By: Hector Soto
+*/
+
 #include <cstdint>
 
 #define LS_FAIL 0xF0F0F0F0F0F0F0F0 //If this value is returned, there was an error.
