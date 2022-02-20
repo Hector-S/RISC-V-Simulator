@@ -5,7 +5,9 @@
     Created By: Hector Soto
 */
 
-#include <cstdint>
+#include <cstdint> //For standard types.
+#include <fstream> //For files.
+#include <iomanip> //For IO stuff.
 
 #define LS_FAIL 0xF0F0F0F0F0F0F0F0 //If this value is returned, there was an error.
 #define LS_WORD 0 //Load/Store 4-byte Word.
@@ -26,6 +28,8 @@
 #define PE_MASK     0x00007C00 //32 = 2^5 = next 5 bits
 #define DATA_MASK   0x000003FC //256 = 2^8 = next 8 bits
 
+#define THREAD_COUNT 16 //How many threads created for multi-threaded functions.
+
 class SimMemory
 {
     public:
@@ -34,6 +38,7 @@ class SimMemory
         uint32_t *GetDataPointer(uint32_t Address); //Returns pointer to data at given Address. Will allocate memory if needed.
         uint64_t Load(uint32_t Address, int Type); //Loads data from memory
         uint64_t Store(uint32_t Address, uint32_t Data, int Type); //Stores data into memory
+        bool PrintFiles(const char *FileName); //Will print files of memory addresses with their content.
     private:
         struct PE //Page Element
         {
@@ -54,6 +59,7 @@ class SimMemory
         MP *MemoryPartition[MP_MAX]; //Total memory. All pointers at all stages are initialized to nullptr.
 
         friend bool FreeMemory(SimMemory &Memory, int ThreadCount, int ThreadNumber); //Initialize portion of memory.
+        friend bool RPrintFiles(SimMemory &Memory, int ThreadCount, int ThreadNumber, const char *FileName, int &PECount); //Recursive of PrintFiles().
 };
 
 #endif // SIMMEMORY_H_INCLUDED
