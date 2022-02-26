@@ -18,6 +18,8 @@ using namespace std; //So we don't have to reference each time. E.g. std::cout o
 namespace MainData //Holds important data for main.cpp
 {
     bool Simulate = false; //If true, program will immediately simulate and close.
+    int SetPC = 0; //Remember what value the user wants to set PC at.
+    int SetSP = 0; //See above for SP.
     string FileName; //Name of file to simulate.
     string Suffix; //Suffix to check for loadable files.
     DirectoryList Directory; //The directory.
@@ -26,11 +28,7 @@ namespace MainData //Holds important data for main.cpp
 
 void DisplayTitle() //Displays the title.
 {
-    cout << "---| RISC-V Simulator V0.03 ( ";
-    if(MainData::Simulator.DebugMode)
-    {
-        cout << "Debug ";
-    }
+    cout << "---| RISC-V Simulator V0.05 ( ";
     if(MainData::Simulator.TraceFile)
     {
         cout << "TraceFile ";
@@ -52,7 +50,25 @@ void DisplayTitle() //Displays the title.
     {
         cout << "ProtectInstructions ";
     }
+    if(MainData::Simulator.HexRegister)
+    {
+        cout << "HexRegister ";
+    }
+    else
+    {
+        cout << "DecRegister ";
+    }
+    if(MainData::Simulator.SilentMode)
+    {
+        cout << "Silent ";
+    }
+    if(MainData::Simulator.DebugMode)
+    {
+        cout << "Debug ";
+    }
     cout << endl;
+    cout << "-| PC: 0x" << setfill('0') << hex << setw(8) << MainData::Simulator.Register[REG_PC];
+    cout << " | SP: 0x" << setfill('0') << hex << setw(8) << MainData::Simulator.Register[REG_SP] << " |-" << endl;
     return;
 }
 
@@ -88,6 +104,120 @@ void SelectFileMenu() //User selects a file.
     return;
 }
 
+void SetPCorSP(bool PC)
+{
+    int Choice = 0;
+    string ArgHolder;
+    if(PC)
+    {
+        cout << "Set PC: ";
+    }
+    else
+    {
+        cout << "Set SP: ";
+    }
+    cin >> ArgHolder; //Get input for data.
+    try
+    {
+        Choice = std::stoi(ArgHolder, nullptr, 16);
+        if(PC)
+        {
+            MainData::Simulator.Register[REG_PC] = Choice;
+            MainData::SetPC = Choice;
+        }
+        else
+        {
+            MainData::Simulator.Register[REG_SP] = Choice;
+            MainData::SetSP = Choice;
+        }
+    }
+    catch(invalid_argument &)
+    {
+        cout << "Failed to set. Was given '" << ArgHolder << "'" << endl;
+    }
+    catch(out_of_range &)
+    {
+        cout << "Failed to set. Was out of range." << endl;
+    }
+}
+
+void SettingsMenu()
+{
+    int Choice = 0;
+    CLEAR_SCREEN;
+    while(Choice != 9)
+    {
+        DisplayTitle(); //Display title.
+        cout << "1. Set PC" << endl;
+        cout << "2. Set SP" << endl;
+        cout << "3. Toggle trace file" << endl;
+        cout << "4. Toggle memory trace file/s" << endl;
+        cout << "5. Toggle instruction protection" << endl;
+        cout << "6. Toggle register format" << endl;
+        cout << "7. Toggle debug mode" << endl;
+        cout << "8. Toggle silent mode" << endl;
+        cout << "9. Main menu" << endl;
+        cout << "Choice: ";
+        cin >> Choice; //Get input for choice.
+        if(std::cin) //If we got an integer.
+        {
+            cin.clear();
+            cin.ignore(IGNORE_LEN, '\n'); //Clear extra input.
+            switch(Choice)
+            {
+                case 1: //Set PC.
+                    SetPCorSP(true);
+                    CLEAR_SCREEN;
+                    break;
+                case 2: //Set SP.
+                    SetPCorSP(false);
+                    CLEAR_SCREEN;
+                    break;
+                case 3: //Toggle trace file.
+                    MainData::Simulator.TraceFile = !MainData::Simulator.TraceFile;
+                    CLEAR_SCREEN;
+                    break;
+                case 4: //Toggle memory trace file/s.
+                    MainData::Simulator.MemoryTraceFile = !MainData::Simulator.MemoryTraceFile;
+                    CLEAR_SCREEN;
+                    break;
+                case 5: //Toggle protect instruction mode.
+                    MainData::Simulator.ProtectInstructions = !MainData::Simulator.ProtectInstructions;
+                    CLEAR_SCREEN;
+                    break;
+                case 6: //Toggle register format.
+                    MainData::Simulator.HexRegister = !MainData::Simulator.HexRegister;
+                    CLEAR_SCREEN;
+                    break;
+                case 7: //Toggle debug mode.
+                    MainData::Simulator.DebugMode = !MainData::Simulator.DebugMode;
+                    CLEAR_SCREEN;
+                    break;
+                case 8: //Toggle silent mode.
+                    MainData::Simulator.SilentMode = !MainData::Simulator.SilentMode;
+                    CLEAR_SCREEN;
+                    break;
+                case 9: //Quit this menu.
+                    CLEAR_SCREEN;
+                    break;
+                default: //Invalid input given.
+                    CLEAR_SCREEN;
+                    cout << "Please select a valid option." << endl;
+                    break;
+            }
+        }
+        else
+        {
+            cin.clear(); //Reset error flags.
+            cin.ignore(IGNORE_LEN, '\n'); //Clear the invalid input.
+            CLEAR_SCREEN;
+            cout << "Please enter an integer." << endl;
+        }
+    }
+    return;
+}
+
+
 int main(int argc, char *argv[])
 {
     int Choice = 0;
@@ -121,11 +251,16 @@ int main(int argc, char *argv[])
                 try
                 {
                     MainData::Simulator.Register[REG_PC] = std::stoi(ArgHolder, nullptr, 16);
+                    MainData::SetPC = MainData::Simulator.Register[REG_PC];
                     cout << "PC set to: 0x" << hex << setw(8) << setfill('0') << std::stoi(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
                 }
                 catch(invalid_argument &)
                 {
                     cout << "Failed to set PC. Was given '" << ArgHolder << "'" << endl;
+                }
+                catch(out_of_range &)
+                {
+                    cout << "Failed to set PC. Was out of range." << endl;
                 }
             }
         }
@@ -137,11 +272,16 @@ int main(int argc, char *argv[])
                 try
                 {
                     MainData::Simulator.Register[REG_SP] = std::stoi(ArgHolder, nullptr, 16);
+                    MainData::SetSP = MainData::Simulator.Register[REG_SP];
                     cout << "SP set to: 0x" << hex << setw(8) << setfill('0') << std::stoi(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
                 }
                 catch(invalid_argument &)
                 {
                     cout << "Failed to set SP. Was given '" << ArgHolder << "'" << endl;
+                }
+                catch(out_of_range &)
+                {
+                    cout << "Failed to set SP. Was out of range." << endl;
                 }
             }
         }
@@ -190,10 +330,14 @@ int main(int argc, char *argv[])
                     SelectFileMenu();
                     CLEAR_SCREEN;
                     break;
-                case 2: //Simulate file.
+                case 2: //Start simulation.
+                    CLEAR_SCREEN;
                     MainData::Simulator.Simulate(MainData::FileName.c_str());
+                    MainData::Simulator.Register[REG_PC] = MainData::SetPC; //Reset PC.
+                    MainData::Simulator.Register[REG_SP] = MainData::SetSP; //Reset SP.
                     break;
-                case 3: //Simulate file.
+                case 3: //Settings.
+                    SettingsMenu();
                     CLEAR_SCREEN;
                     break;
                 case 4: //Quit the program.

@@ -24,13 +24,24 @@ bool RVSimulator::S_Instructions(uint32_t Instruction)
     {
         case FUNC_SW:
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_WORD);
+            if(!SilentMode){cout << "SW ";}
             break;
         case FUNC_SH:
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_HALF);
+            if(!SilentMode){cout << "SH ";}
             break;
         case FUNC_SB:
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_BYTE);
+            if(!SilentMode){cout << "SB ";}
             break;
+    }
+    if(!SilentMode) //Not in silent mode.
+    {
+        if(DebugMode)
+        {
+            cout << RegtoStr(rs2) << ',' << dec << temp << '(' << RegtoStr(rs1) << ") | ";
+        }
+        cout << RegValtoStr(rs1) << ", " << RegValtoStr(rs2);
     }
     return false;
 }

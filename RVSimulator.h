@@ -22,20 +22,20 @@
 #define OP_IMMEDIATE    0x13    //I-type format.
 #define OP_LOAD         0x03    //Load instructions are in the immediate instructions function.
 #define OP_STORE        0x23    //S-type format.
-#define OP_BRANCH       0x63
+#define OP_BRANCH       0x63    //B-type format.
 #define OP_REGISTER     0x33    //R-type format.
 #define OP_AUIPC        0x17    //U-type format. IMPLEMENTED - COMPLETE
 #define OP_LUI          0x37    //U-type format. IMPLEMENTED - COMPLETE
 #define OP_JAL          0x6F
 #define OP_JALR         0x67    //I-type format. IMPLEMENTED - COMPLETE
-//Funct3 codes for instructions. Total instructions = 36
-#define FUNC_JALR       0x0     //IMPLEMENTED - CHECK
-#define FUNC_BEQ        0x0
-#define FUNC_BNE        0x1
-#define FUNC_BLT        0x4
-#define FUNC_BGE        0x5
-#define FUNC_BLTU       0x6
-#define FUNC_BGEU       0x7
+//Funct3 codes for instructions. Total instructions = 36. Left to do: 19
+#define FUNC_JALR       0x0     //IMPLEMENTED - COMPLETE
+#define FUNC_BEQ        0x0     //IMPLEMENTED - COMPLETE
+#define FUNC_BNE        0x1     //IMPLEMENTED - COMPLETE
+#define FUNC_BLT        0x4     //IMPLEMENTED - COMPLETE
+#define FUNC_BGE        0x5     //IMPLEMENTED - COMPLETE
+#define FUNC_BLTU       0x6     //IMPLEMENTED - COMPLETE
+#define FUNC_BGEU       0x7     //IMPLEMENTED - COMPLETE
 #define FUNC_LB         0x0     //IMPLEMENTED - COMPLETE
 #define FUNC_LH         0x1     //IMPLEMENTED - COMPLETE
 #define FUNC_LW         0x2     //IMPLEMENTED - COMPLETE
@@ -45,10 +45,10 @@
 #define FUNC_SH         0x1     //IMPLEMENTED - COMPLETE
 #define FUNC_SW         0x2     //IMPLEMENTED - COMPLETE
 #define FUNC_ADDI       0x0     //IMPLEMENTED - COMPLETE
-#define FUNC_SLTI       0x2
-#define FUNC_SLTIU      0x3
-#define FUNC_XORI       0x4
-#define FUNC_ORI        0x6
+#define FUNC_SLTI       0x2     //IMPLEMENTED - COMPLETE
+#define FUNC_SLTIU      0x3     //IMPLEMENTED - COMPLETE
+#define FUNC_XORI       0x4     //IMPLEMENTED - COMPLETE
+#define FUNC_ORI        0x6     //IMPLEMENTED - COMPLETE
 #define FUNC_ANDI       0x7
 #define FUNC_SLLI       0x1     //IMPLEMENTED - COMPLETE
 #define FUNC_SRLI       0x5     //IMPLEMENTED - COMPLETE
@@ -63,8 +63,11 @@
 #define FUNC_SRA        0x5
 #define FUNC_OR         0x6
 #define FUNC_AND        0x7
-//Funct
+//      FUNC_NOP                //IMPLEMENTED - COMPLETE.
 
+
+
+std::string RegtoStr(uint8_t RegisterValue); //To generate string based off given register.
 
 class RVSimulator
 {
@@ -78,6 +81,8 @@ class RVSimulator
         bool TraceFile = true; //If true, will print a trace file.
         bool MemoryTraceFile = true; //If true, will print files of memory addresses with their content.
         bool ProtectInstructions = true; //If enabled, instructions are stored in memory that can't be overwritten.
+        bool HexRegister = false; //Register values will be printed in hex if true. In decimal otherwise.
+        bool SilentMode = false; //Instructions won't print output to terminal.
     private:
         SimMemory Memory; //Simulated memory.
         SimMemory InstructionMemory; //Separate memory to hold instructions if enabled.
@@ -86,6 +91,8 @@ class RVSimulator
         bool S_Instructions(uint32_t Instruction); //Perform S-type instructions.
         bool R_Instructions(uint32_t Instruction); //Perform R-type instructions.
         bool U_Instructions(uint32_t Instruction); //Perform U-type instructions.
+        bool B_Instructions(uint32_t Instruction); //Perform B-type instructions.
+        std::string RegValtoStr(uint8_t RegisterValue); //To generate string value based off given register.
 };
 
 #endif // RVSIMULATOR_H_INCLUDED

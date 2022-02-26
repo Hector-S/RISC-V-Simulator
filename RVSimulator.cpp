@@ -7,6 +7,87 @@
 using namespace std;
 
 /*
+    Generates string based off given register value.
+*/
+string RegtoStr(uint8_t RegisterValue)
+{
+    string ReturnString = "BAD_REG";
+    if(RegisterValue == 0)
+    {
+        ReturnString = "zero";
+    }
+    else if(RegisterValue == 1)
+    {
+        ReturnString = "ra";
+    }
+    else if(RegisterValue == 2)
+    {
+        ReturnString = "sp";
+    }
+    else if(RegisterValue == 3)
+    {
+        ReturnString = "gp";
+    }
+    else if(RegisterValue == 4)
+    {
+        ReturnString = "tp";
+    }
+    else if((RegisterValue >= 5) && (RegisterValue <= 7))
+    {
+        ReturnString = "t" + to_string(RegisterValue - 5);
+    }
+    else if(RegisterValue == 8)
+    {
+        ReturnString = "s0";
+    }
+    else if(RegisterValue == 9)
+    {
+        ReturnString = "s1";
+    }
+    else if((RegisterValue >= 10) && (RegisterValue <= 17))
+    {
+        ReturnString = "a" + to_string(RegisterValue - 10);
+    }
+    else if((RegisterValue >= 18) && (RegisterValue <= 27))
+    {
+        ReturnString = "s" + to_string(RegisterValue - 16);
+    }
+    else if((RegisterValue >= 28) && (RegisterValue <= 31))
+    {
+        ReturnString = "t" + to_string(RegisterValue - 25);
+    }
+    else if(RegisterValue == 32)
+    {
+        ReturnString = "pc";
+    }
+    return ReturnString;
+}
+
+/*
+    Generates string value based off given register.
+*/
+string RVSimulator::RegValtoStr(uint8_t RegisterValue)
+{
+    std::stringstream ReturnString;
+    if((RegisterValue >= 0) && (RegisterValue <= 32))
+    {
+        if(HexRegister == true)
+        {
+            ReturnString << "0x" << hex << setw(8) << setfill('0') << Register[RegisterValue];
+        }
+        else
+        {
+            ReturnString << dec << Register[RegisterValue];
+        }
+    }
+    else
+    {
+        ReturnString << "BAD_REG";
+    }
+    return ReturnString.str();
+}
+
+/*
     CONSTRUCTOR
 */
 RVSimulator::RVSimulator()
@@ -48,7 +129,7 @@ void RVSimulator::Simulate(const char *MemoryFile)
         Reason = true; goto TRACE_FAIL;
     }
     cout << hex << setfill('0');
-    if(DebugMode)
+    if(DebugMode && !SilentMode)
     {
         cout << "---| Data Read from File |---" << endl;
     }
@@ -83,7 +164,7 @@ void RVSimulator::Simulate(const char *MemoryFile)
                     Memory.Store(Address, Instruction, LS_WORD);
                 }
                 Memory.Store(Address, Instruction, LS_WORD);
-                if(DebugMode)
+                if(DebugMode && !SilentMode)
                 {
                     cout << "Address 0x" << setw(8) << Address << " | Data: 0x" << setw(8) << Instruction << endl;
                 }
@@ -99,6 +180,18 @@ void RVSimulator::Simulate(const char *MemoryFile)
 
     //-----| SIMULATION STARTS HERE |-----
     cout << "---| Simulation Messages |---" << endl;
+    if(!SilentMode)
+    {
+        cout << "  Address  | Instruction ";
+        if(DebugMode)
+        {
+            cout << "| Decoded | rd, rs1, rs2" << endl;
+        }
+        else
+        {
+            cout << "| rd, rs1, rs2" << endl;
+        }
+    }
     while(!EndSim) //While given no signal to end simulation.
     {
         if(ProtectInstructions) //If we're protecting instructions.
@@ -113,6 +206,10 @@ void RVSimulator::Simulate(const char *MemoryFile)
         {
             cout << "WARNING: Sim ended because it encountered a trap instruction of 0x00000000" << endl;
             break;
+        }
+        if(!SilentMode)
+        {
+            cout << "0x" << hex << setw(8) << Register[REG_PC] << " | 0x" << setw(8) << Instruction << "  | "; //Print address and current instruction.
         }
         Opcode = Instruction & 0x0000007F;
         switch(Opcode)
@@ -132,24 +229,41 @@ void RVSimulator::Simulate(const char *MemoryFile)
             case OP_REGISTER: //R-type instructions.
                 R_Instructions(Instruction);
                 break;
+            case OP_BRANCH: //B-type instructions.
+                B_Instructions(Instruction);
+                break;
             case OP_LUI: //Load upper immediate.
                 U_Instructions(Instruction);
                 break;
+            case OP_AUIPC: //Load upper immediate.
+                U_Instructions(Instruction);
+                break;
+            default:
+                cout << "WARNING: Unrecognized instruction found. Instruction ignored.";
+                break;
+        }
+        if(!SilentMode)
+        {
+            cout << endl; //End line.
         }
         if(!EndSim) //Don't increment PC, sim has ended.
         {
             Register[REG_PC] += 4;
         }
     }
-    if(DebugMode) //Print out registers.
+    if(SilentMode)
+    {
+        cout << endl; //End line.
+    }
+    if(DebugMode || SilentMode) //Print out registers.
     {
         cout << "---| Register Data (PC = 32) |---" << endl;
         for(int i = 0; i < 33; ++i)
         {
-            cout << "Register-" << dec << i << ": 0x" << setw(8) <<  hex << Register[i] << " | dec: " << dec << Register[i] << endl;
+            cout << "Register-" << setw(2) << left << dec << setfill(' ') << i << ": 0x" << setw(8) << right << setfill('0') <<  hex << Register[i] << " | dec: " << dec << Register[i] << endl;
         }
     }
-    if(MemoryTraceFile)
+    if(MemoryTraceFile && !SilentMode)
     {
         cout << "---| Memory Trace File Info |---" << endl;
         Memory.PrintFiles("MemoryData");
