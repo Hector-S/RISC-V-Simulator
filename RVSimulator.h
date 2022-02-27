@@ -49,7 +49,7 @@
 #define FUNC_SLTIU      0x3     //IMPLEMENTED - COMPLETE
 #define FUNC_XORI       0x4     //IMPLEMENTED - COMPLETE
 #define FUNC_ORI        0x6     //IMPLEMENTED - COMPLETE
-#define FUNC_ANDI       0x7
+#define FUNC_ANDI       0x7     //IMPLEMENTED - COMPLETE
 #define FUNC_SLLI       0x1     //IMPLEMENTED - COMPLETE
 #define FUNC_SRLI       0x5     //IMPLEMENTED - COMPLETE
 #define FUNC_SRAI       0x5     //IMPLEMENTED - COMPLETE

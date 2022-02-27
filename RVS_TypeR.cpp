@@ -40,6 +40,88 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
                 cout << "ADD/SUB Error: Invalid funct7 given. Instruction ignored." << endl;
             }
             break;
+        case FUNC_SLL:
+            if(funct7 == 0x00)
+            {
+                Register[rd] = Register[rs1] << (Register[rs2] & 0x1F); //Only use first 5 bits.
+                if(!SilentMode){cout << "SLL ";}
+            }
+            else
+            {
+                cout << "SLL Error: funct7 != 0. Instruction ignored." << endl;
+            }
+            break;
+        case FUNC_SLT:
+            if(funct7 == 0x00)
+            {
+                Register[rd] = Register[rs1] < Register[rs2];
+                if(!SilentMode){cout << "SLT ";}
+            }
+            else
+            {
+                cout << "SLT Error: funct7 != 0. Instruction ignored." << endl;
+            }
+            break;
+        case FUNC_SLTU:
+            if(funct7 == 0x00)
+            {
+                Register[rd] = ((unsigned)Register[rs1]) < ((unsigned)Register[rs2]);
+                if(!SilentMode){cout << "SLTU ";}
+            }
+            else
+            {
+                cout << "SLTU Error: funct7 != 0. Instruction ignored." << endl;
+            }
+            break;
+        case FUNC_XOR:
+            if(funct7 == 0x00)
+            {
+                Register[rd] = Register[rs1] ^ Register[rs2];
+                if(!SilentMode){cout << "XOR ";}
+            }
+            else
+            {
+                cout << "XOR Error: funct7 != 0. Instruction ignored." << endl;
+            }
+            break;
+        case FUNC_SRL:
+            if(funct7 == 0x00) //SRL
+            {
+                Register[rd] = (unsigned)Register[rs1] >> (Register[rs2] & 0x1F);
+                if(!SilentMode){cout << "SRL ";}
+            }
+            else if(funct7 == 0x20) //SRA
+            {
+                Register[rd] = Register[rs1] >> (Register[rs2] & 0x1F);
+                if(!SilentMode){cout << "SRA ";}
+            }
+            else
+            {
+                cout << "SRL/SRA Error: Invalid funct7 given. Instruction ignored." << endl;
+            }
+            break;
+        case FUNC_OR:
+            if(funct7 == 0x00)
+            {
+                Register[rd] = Register[rs1] | Register[rs2];
+                if(!SilentMode){cout << "OR ";}
+            }
+            else
+            {
+                cout << "OR Error: funct7 != 0. Instruction ignored." << endl;
+            }
+            break;
+        case FUNC_AND:
+            if(funct7 == 0x00)
+            {
+                Register[rd] = Register[rs1] & Register[rs2];
+                if(!SilentMode){cout << "AND ";}
+            }
+            else
+            {
+                cout << "AND Error: funct7 != 0. Instruction ignored." << endl;
+            }
+            break;
     }
     if(!SilentMode) //Not in silent mode.
     {
