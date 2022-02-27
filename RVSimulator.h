@@ -26,7 +26,7 @@
 #define OP_REGISTER     0x33    //R-type format.
 #define OP_AUIPC        0x17    //U-type format. IMPLEMENTED - COMPLETE
 #define OP_LUI          0x37    //U-type format. IMPLEMENTED - COMPLETE
-#define OP_JAL          0x6F
+#define OP_JAL          0x6F    //J-type format.
 #define OP_JALR         0x67    //I-type format. IMPLEMENTED - COMPLETE
 //Funct3 codes for instructions. Total instructions = 36. Left to do: 19
 #define FUNC_JALR       0x0     //IMPLEMENTED - COMPLETE
@@ -55,15 +55,15 @@
 #define FUNC_SRAI       0x5     //IMPLEMENTED - COMPLETE
 #define FUNC_ADD        0x0     //IMPLEMENTED - COMPLETE
 #define FUNC_SUB        0x0     //IMPLEMENTED - COMPLETE
-#define FUNC_SLL        0x1
-#define FUNC_SLT        0x2
-#define FUNC_SLTU       0x3
-#define FUNC_XOR        0x4
-#define FUNC_SRL        0x5
-#define FUNC_SRA        0x5
-#define FUNC_OR         0x6
-#define FUNC_AND        0x7
-//      FUNC_NOP                //IMPLEMENTED - COMPLETE.
+#define FUNC_SLL        0x1     //IMPLEMENTED - COMPLETE
+#define FUNC_SLT        0x2     //IMPLEMENTED - COMPLETE
+#define FUNC_SLTU       0x3     //IMPLEMENTED - COMPLETE
+#define FUNC_XOR        0x4     //IMPLEMENTED - COMPLETE
+#define FUNC_SRL        0x5     //IMPLEMENTED - COMPLETE
+#define FUNC_SRA        0x5     //IMPLEMENTED - COMPLETE
+#define FUNC_OR         0x6     //IMPLEMENTED - COMPLETE
+#define FUNC_AND        0x7     //IMPLEMENTED - COMPLETE
+//      FUNC_NOP                //IMPLEMENTED - COMPLETE
 
 
 
@@ -77,8 +77,8 @@ class RVSimulator
         void Simulate(const char *MemoryFile);
 
         int Register[33]; //Registers They're signed by default.
+        std::string TraceFileName; //If this is not empty, output will redirect to this file instead of the terminal.
         bool DebugMode = true; //If true, will print debug info.
-        bool TraceFile = true; //If true, will print a trace file.
         bool MemoryTraceFile = true; //If true, will print files of memory addresses with their content.
         bool ProtectInstructions = true; //If enabled, instructions are stored in memory that can't be overwritten.
         bool HexRegister = false; //Register values will be printed in hex if true. In decimal otherwise.
@@ -92,6 +92,7 @@ class RVSimulator
         bool R_Instructions(uint32_t Instruction); //Perform R-type instructions.
         bool U_Instructions(uint32_t Instruction); //Perform U-type instructions.
         bool B_Instructions(uint32_t Instruction); //Perform B-type instructions.
+        bool JAL_Instruction(uint32_t Instruction); //Perform the JAL Instruction.
         std::string RegValtoStr(uint8_t RegisterValue); //To generate string value based off given register.
 };
 

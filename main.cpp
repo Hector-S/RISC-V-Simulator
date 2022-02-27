@@ -28,10 +28,10 @@ namespace MainData //Holds important data for main.cpp
 
 void DisplayTitle() //Displays the title.
 {
-    cout << "---| RISC-V Simulator V0.06 ( ";
-    if(MainData::Simulator.TraceFile)
+    cout << "---| RISC-V Simulator V0.07 ( ";
+    if(!MainData::Simulator.TraceFileName.empty())
     {
-        cout << "TraceFile ";
+        cout << "TF='" << MainData::Simulator.TraceFileName << "' ";
     }
     if(MainData::Simulator.MemoryTraceFile)
     {
@@ -150,7 +150,7 @@ void SettingsMenu()
         DisplayTitle(); //Display title.
         cout << "1. Set PC" << endl;
         cout << "2. Set SP" << endl;
-        cout << "3. Toggle trace file" << endl;
+        cout << "3. Set trace file name" << endl;
         cout << "4. Toggle memory trace file/s" << endl;
         cout << "5. Toggle instruction protection" << endl;
         cout << "6. Toggle register format" << endl;
@@ -173,8 +173,9 @@ void SettingsMenu()
                     SetPCorSP(false);
                     CLEAR_SCREEN;
                     break;
-                case 3: //Toggle trace file.
-                    MainData::Simulator.TraceFile = !MainData::Simulator.TraceFile;
+                case 3: //Set trace file name.
+                    cout << "Trace file name: ";
+                    cin >> MainData::Simulator.TraceFileName;
                     CLEAR_SCREEN;
                     break;
                 case 4: //Toggle memory trace file/s.
@@ -233,7 +234,11 @@ int main(int argc, char *argv[])
         }
         else if(ArgHolder.compare("-tf") == 0) //Enable trace file.
         {
-            MainData::Simulator.TraceFile = true;
+            if((i+1) < argc) //If the next argument exists, take it as a file name.
+            {
+                ++i; ArgHolder = argv[i];
+                MainData::Simulator.TraceFileName = argv[i];
+            }
         }
         else if(ArgHolder.compare("-mtf") == 0) //Enable memory trace file.
         {

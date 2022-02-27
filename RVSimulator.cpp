@@ -110,6 +110,7 @@ void RVSimulator::Simulate(const char *MemoryFile)
 {
     ifstream File; //Filed being loaded.
     ofstream OutputFile; //Output file.
+    streambuf *Terminal = cout.rdbuf(); //Save terminal if needed.
     uint32_t Address = 0, Instruction = 0; //To hold address and instruction loaded from file.
     uint32_t Opcode = 0; //Identify opcode.
     string InputData; //Hold input data as string.
@@ -127,6 +128,17 @@ void RVSimulator::Simulate(const char *MemoryFile)
     {
         cout << "Error: Unable to open '" << MemoryFile << "'." << endl;
         Reason = true; goto TRACE_FAIL;
+    }
+    if(!TraceFileName.empty())
+    {
+        OutputFile.open(TraceFileName); //Open trace file.
+        if(!OutputFile.is_open()) //Need to be able to open file.
+        {
+            cout << "Error: Unable to open '" << TraceFileName << "'." << endl;
+            File.close();
+            Reason = true; goto TRACE_FAIL;
+        }
+        cout.rdbuf(OutputFile.rdbuf());
     }
     cout << hex << setfill('0');
     if(DebugMode && !SilentMode)
@@ -220,6 +232,9 @@ void RVSimulator::Simulate(const char *MemoryFile)
             case OP_JALR:
                 EndSim = I_Instructions(Instruction);
                 break;
+            case OP_JAL: //JAL Instruction.
+                JAL_Instruction(Instruction);
+                break;
             case OP_LOAD:
                 I_Instructions(Instruction);
                 break;
@@ -267,6 +282,11 @@ void RVSimulator::Simulate(const char *MemoryFile)
     {
         cout << "---| Memory Trace File Info |---" << endl;
         Memory.PrintFiles("MemoryData");
+    }
+    if(!TraceFileName.empty())
+    {
+        cout.rdbuf(Terminal); //Restore cout to terminal.
+        OutputFile.close();
     }
     cout << dec << setfill(' ');
     return;
