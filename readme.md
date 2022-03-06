@@ -13,6 +13,8 @@ apt-get install libsdl2-ttf-dev
 
 apt-get install libsdl2-image-dev
 
+Then you can use the makefile to compile the simulator.
+
 **---| How to Compile (Windows) |---**
 
 In the Windows directory there is a Code::Blocks project file.
@@ -48,3 +50,5 @@ Created By: Hector Soto
 **---| Licensing/Software Used |---**
 
 The GUI for this simulator was made using SDL2. For more licensing info about SDL2 or additional libraries used, you can look at the LICENSE files in the main directory.
+
+The Inconsolata.ttf font was used for the GUI. Which is under the open font license: https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
