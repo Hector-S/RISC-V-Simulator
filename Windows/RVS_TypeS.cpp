@@ -24,15 +24,15 @@ bool RVSimulator::S_Instructions(uint32_t Instruction)
     {
         case FUNC_SW:
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_WORD);
-            if(!SilentMode){cout << "SW ";}
+            if(!SilentMode && DebugMode){cout << "SW ";}
             break;
         case FUNC_SH:
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_HALF);
-            if(!SilentMode){cout << "SH ";}
+            if(!SilentMode && DebugMode){cout << "SH ";}
             break;
         case FUNC_SB:
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_BYTE);
-            if(!SilentMode){cout << "SB ";}
+            if(!SilentMode && DebugMode){cout << "SB ";}
             break;
     }
     if(!SilentMode) //Not in silent mode.

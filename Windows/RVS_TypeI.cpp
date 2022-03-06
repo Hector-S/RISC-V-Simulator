@@ -77,27 +77,27 @@ bool RVSimulator::I_Instructions(uint32_t Instruction)
         {
             case FUNC_LW: //Load a word.
                 Register[rd] = Memory.Load(Register[rs1] + temp, LS_WORD);
-                if(!SilentMode){cout << "LW ";}
+                if(!SilentMode && DebugMode){cout << "LW ";}
                 break;
             case FUNC_LH: //Load 2 bytes.
                 temp = Memory.Load(Register[rs1] + temp, LS_HALF);
                 temp = temp << 16; temp = temp >> 16; //Sign-extend 16-bit value.
                 Register[rd] = temp;
-                if(!SilentMode){cout << "LH ";}
+                if(!SilentMode && DebugMode){cout << "LH ";}
                 break;
             case FUNC_LB: //Load 1 byte.
                 temp = Memory.Load(Register[rs1] + temp, LS_BYTE);
                 temp = temp << 24; temp = temp >> 24; //Sign-extend 8-bit value.
                 Register[rd] = temp;
-                if(!SilentMode){cout << "LB ";}
+                if(!SilentMode && DebugMode){cout << "LB ";}
                 break;
             case FUNC_LHU: //Load 2 bytes unsigned.
                 Register[rd] = Memory.Load(Register[rs1] + temp, LS_HALF);
-                if(!SilentMode){cout << "LHU ";}
+                if(!SilentMode && DebugMode){cout << "LHU ";}
                 break;
             case FUNC_LBU: //Load 1 byte unsigned.
                 Register[rd] = Memory.Load(Register[rs1] + temp, LS_BYTE);
-                if(!SilentMode){cout << "LBU ";}
+                if(!SilentMode && DebugMode){cout << "LBU ";}
                 break;
         }
         if(!SilentMode) //Not in silent mode.
@@ -116,7 +116,7 @@ bool RVSimulator::I_Instructions(uint32_t Instruction)
         case FUNC_ADDI: //Add immediate.
             temp = imm << 20; temp = temp >> 20; //Get sign-extended immediate.
             Register[rd] = temp + Register[rs1];
-            if(!SilentMode){cout << "ADDI ";}
+            if(!SilentMode && DebugMode){cout << "ADDI ";}
             break;
         case FUNC_SLTI: //Set less than immediate.
             temp = imm << 20; temp = temp >> 20; //Get sign-extended immediate.
@@ -128,7 +128,7 @@ bool RVSimulator::I_Instructions(uint32_t Instruction)
             {
                 Register[rd] = 0;
             }
-            if(!SilentMode){cout << "SLTI ";}
+            if(!SilentMode && DebugMode){cout << "SLTI ";}
             break;
         case FUNC_SLTIU: //Set less than immediate unsigned.
             temp = imm << 20; temp = temp >> 20; //Get sign-extended immediate.
@@ -140,26 +140,26 @@ bool RVSimulator::I_Instructions(uint32_t Instruction)
             {
                 Register[rd] = 0;
             }
-            if(!SilentMode){cout << "SLTIU ";}
+            if(!SilentMode && DebugMode){cout << "SLTIU ";}
             break;
         case FUNC_XORI: //XOR immediate.
             temp = imm << 20; temp = temp >> 20; //Get sign-extended immediate.
             Register[rd] = Register[rs1] ^ temp;
-            if(!SilentMode){cout << "XORI ";}
+            if(!SilentMode && DebugMode){cout << "XORI ";}
             break;
         case FUNC_ORI: //OR immediate.
             temp = imm << 20; temp = temp >> 20; //Get sign-extended immediate.
             Register[rd] = Register[rs1] | temp;
-            if(!SilentMode){cout << "ORI ";}
+            if(!SilentMode && DebugMode){cout << "ORI ";}
             break;
         case FUNC_ANDI: //AND immediate.
             temp = imm << 20; temp = temp >> 20; //Get sign-extended immediate.
             Register[rd] = Register[rs1] & temp;
-            if(!SilentMode){cout << "ANDI ";}
+            if(!SilentMode && DebugMode){cout << "ANDI ";}
             break;
         case FUNC_SLLI: //Logical shift left.
             Register[rd] = Register[rs1] << (imm & 0x1F);
-            if(!SilentMode){cout << "SLLI ";}
+            if(!SilentMode && DebugMode){cout << "SLLI ";}
             break;
         case FUNC_SRLI: //Logical shift right.
             if((imm >> 5) == 0x00) //If unsigned, fill with zeros.
@@ -167,12 +167,12 @@ bool RVSimulator::I_Instructions(uint32_t Instruction)
                 utemp = Register[rs1];
                 utemp = utemp >> (imm & 0x1F); //Shift right.
                 Register[rd] = utemp;
-                if(!SilentMode){cout << "SRLI ";}
+                if(!SilentMode && DebugMode){cout << "SRLI ";}
             }
             else if((imm >> 5) == 0x20) //SRAI. If signed.
             {
                 Register[rd] = Register[rs1] >> (imm & 0x1F); //Fill with signed bit.
-                if(!SilentMode){cout << "SRAI ";}
+                if(!SilentMode && DebugMode){cout << "SRAI ";}
             }
             else
             {

@@ -28,12 +28,12 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00) //ADD
             {
                 Register[rd] = Register[rs1] + Register[rs2];
-                if(!SilentMode){cout << "ADD ";}
+                if(!SilentMode && DebugMode){cout << "ADD ";}
             }
             else if(funct7 == 0x20) //SUB
             {
                 Register[rd] = Register[rs1] - Register[rs2];
-                if(!SilentMode){cout << "SUB ";}
+                if(!SilentMode && DebugMode){cout << "SUB ";}
             }
             else
             {
@@ -44,7 +44,7 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00)
             {
                 Register[rd] = Register[rs1] << (Register[rs2] & 0x1F); //Only use first 5 bits.
-                if(!SilentMode){cout << "SLL ";}
+                if(!SilentMode && DebugMode){cout << "SLL ";}
             }
             else
             {
@@ -55,7 +55,7 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00)
             {
                 Register[rd] = Register[rs1] < Register[rs2];
-                if(!SilentMode){cout << "SLT ";}
+                if(!SilentMode && DebugMode){cout << "SLT ";}
             }
             else
             {
@@ -66,7 +66,7 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00)
             {
                 Register[rd] = ((unsigned)Register[rs1]) < ((unsigned)Register[rs2]);
-                if(!SilentMode){cout << "SLTU ";}
+                if(!SilentMode && DebugMode){cout << "SLTU ";}
             }
             else
             {
@@ -77,7 +77,7 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00)
             {
                 Register[rd] = Register[rs1] ^ Register[rs2];
-                if(!SilentMode){cout << "XOR ";}
+                if(!SilentMode && DebugMode){cout << "XOR ";}
             }
             else
             {
@@ -88,12 +88,12 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00) //SRL
             {
                 Register[rd] = (unsigned)Register[rs1] >> (Register[rs2] & 0x1F);
-                if(!SilentMode){cout << "SRL ";}
+                if(!SilentMode && DebugMode){cout << "SRL ";}
             }
             else if(funct7 == 0x20) //SRA
             {
                 Register[rd] = Register[rs1] >> (Register[rs2] & 0x1F);
-                if(!SilentMode){cout << "SRA ";}
+                if(!SilentMode && DebugMode){cout << "SRA ";}
             }
             else
             {
@@ -104,7 +104,7 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00)
             {
                 Register[rd] = Register[rs1] | Register[rs2];
-                if(!SilentMode){cout << "OR ";}
+                if(!SilentMode && DebugMode){cout << "OR ";}
             }
             else
             {
@@ -115,7 +115,7 @@ bool RVSimulator::R_Instructions(uint32_t Instruction)
             if(funct7 == 0x00)
             {
                 Register[rd] = Register[rs1] & Register[rs2];
-                if(!SilentMode){cout << "AND ";}
+                if(!SilentMode && DebugMode){cout << "AND ";}
             }
             else
             {

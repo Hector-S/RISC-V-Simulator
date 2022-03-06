@@ -23,11 +23,11 @@ bool RVSimulator::U_Instructions(uint32_t Instruction)
     {
         case OP_LUI: //Load Upper Immediate.
             Register[rd] = imm << 12; //LUI fills in low 12 bits with zeros.
-            if(!SilentMode){cout << "LUI ";}
+            if(!SilentMode && DebugMode){cout << "LUI ";}
             break;
         case OP_AUIPC: //Add Upper Immediate to PC.
             Register[rd] = Register[REG_PC] + (imm << 12); //If before JALR, it saves the address before JALR or its own address.
-            if(!SilentMode){cout << "AUIPC ";}
+            if(!SilentMode && DebugMode){cout << "AUIPC ";}
             break;
     }
     if(!SilentMode) //Not in silent mode.

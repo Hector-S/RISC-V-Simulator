@@ -39,7 +39,7 @@ bool RVSimulator::B_Instructions(uint32_t Instruction)
                     cout << "WARNING-B: Branched to self. Instruction ignored." << endl;
                 }
             }
-            if(!SilentMode){cout << "BEQ ";}
+            if(!SilentMode && DebugMode){cout << "BEQ ";}
             break;
         case FUNC_BNE:
             if(Register[rs1] != Register[rs2])
@@ -54,7 +54,7 @@ bool RVSimulator::B_Instructions(uint32_t Instruction)
                     cout << "WARNING-B: Branched to self. Instruction ignored." << endl;
                 }
             }
-            if(!SilentMode){cout << "BNE ";}
+            if(!SilentMode && DebugMode){cout << "BNE ";}
             break;
         case FUNC_BLT:
             if(Register[rs1] < Register[rs2])
@@ -69,7 +69,7 @@ bool RVSimulator::B_Instructions(uint32_t Instruction)
                     cout << "WARNING-B: Branched to self. Instruction ignored." << endl;
                 }
             }
-            if(!SilentMode){cout << "BLT ";}
+            if(!SilentMode && DebugMode){cout << "BLT ";}
             break;
         case FUNC_BGE:
             if(Register[rs1] >= Register[rs2])
@@ -84,7 +84,7 @@ bool RVSimulator::B_Instructions(uint32_t Instruction)
                     cout << "WARNING-B: Branched to self. Instruction ignored." << endl;
                 }
             }
-            if(!SilentMode){cout << "BGE ";}
+            if(!SilentMode && DebugMode){cout << "BGE ";}
             break;
         case FUNC_BLTU:
             if(((unsigned)Register[rs1]) < ((unsigned)Register[rs2]))
@@ -99,7 +99,7 @@ bool RVSimulator::B_Instructions(uint32_t Instruction)
                     cout << "WARNING-B: Branched to self. Instruction ignored." << endl;
                 }
             }
-            if(!SilentMode){cout << "BLTU ";}
+            if(!SilentMode && DebugMode){cout << "BLTU ";}
             break;
         case FUNC_BGEU:
             if(((unsigned)Register[rs1]) >= ((unsigned)Register[rs2]))
@@ -114,7 +114,7 @@ bool RVSimulator::B_Instructions(uint32_t Instruction)
                     cout << "WARNING-B: Branched to self. Instruction ignored." << endl;
                 }
             }
-            if(!SilentMode){cout << "BGEU ";}
+            if(!SilentMode && DebugMode){cout << "BGEU ";}
             break;
     }
     if(!SilentMode) //Not in silent mode.
