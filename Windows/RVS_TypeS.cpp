@@ -23,14 +23,29 @@ bool RVSimulator::S_Instructions(uint32_t Instruction)
     switch(funct3)
     {
         case FUNC_SW:
+            //For GUI
+            StoreType = LS_WORD;
+            LastAddress = Register[rs1] + temp;
+            LAOldData = Memory.Load(Register[rs1] + temp, LS_WORD);
+            //Normal instruction process.
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_WORD);
             if(!SilentMode && DebugMode){cout << "SW ";}
             break;
         case FUNC_SH:
+            //For GUI
+            StoreType = LS_HALF;
+            LastAddress = Register[rs1] + temp;
+            LAOldData = Memory.Load(Register[rs1] + temp, LS_HALF);
+            //Normal instruction process.
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_HALF);
             if(!SilentMode && DebugMode){cout << "SH ";}
             break;
         case FUNC_SB:
+            //For GUI
+            StoreType = LS_BYTE;
+            LastAddress = Register[rs1] + temp;
+            LAOldData = Memory.Load(Register[rs1] + temp, LS_BYTE);
+            //Normal instruction process.
             Memory.Store(Register[rs1] + temp, Register[rs2], LS_BYTE);
             if(!SilentMode && DebugMode){cout << "SB ";}
             break;

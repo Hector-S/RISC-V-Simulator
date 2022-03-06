@@ -520,14 +520,18 @@ void RVSimulator::RVS_GUI()
                                     TempRegArray = nullptr;
                                 }
                             }
-                            TempRegArray = new int[33]; //Assume new doesn't fail.
+                            TempRegArray = new int[36]; //Assume new doesn't fail.
                             for(int i = 0; i < 33; ++i) //Copy current register states.
                             {
                                 TempRegArray[i] = Register[i];
                             }
+                            InstructionLoop(); //Do instruction.
+                            TempRegArray[33] = StoreType; //Save memory data info before instruction loop.
+                            TempRegArray[34] = LastAddress;
+                            TempRegArray[35] = LAOldData;
                             SimHistory.Push(TempRegArray);
                             TempRegArray = nullptr;
-                            InstructionLoop();
+                            StoreType = -1; //Invalidate StoreType.
                             Register[REG_PC] += 4; //Increment PC.
                             AddressChange = true;
                             break;
@@ -537,6 +541,10 @@ void RVSimulator::RVS_GUI()
                                 TempRegArray = SimHistory.Pop();
                                 if(TempRegArray)
                                 {
+                                    if(TempRegArray[33] != -1) //If a store had occurred, undo it.
+                                    {
+                                        Memory.Store(TempRegArray[34], TempRegArray[35], TempRegArray[33]);
+                                    }
                                     for(int i = 0; i < 33; ++i)
                                     {
                                         Register[i] = TempRegArray[i];
@@ -626,14 +634,18 @@ void RVSimulator::RVS_GUI()
                                         TempRegArray = nullptr;
                                     }
                                 }
-                                TempRegArray = new int[33]; //Assume new doesn't fail.
+                                TempRegArray = new int[36]; //Assume new doesn't fail.
                                 for(int i = 0; i < 33; ++i) //Copy current register states.
                                 {
                                     TempRegArray[i] = Register[i];
                                 }
+                                InstructionLoop(); //Do instruction.
+                                TempRegArray[33] = StoreType; //Save memory data info before instruction loop.
+                                TempRegArray[34] = LastAddress;
+                                TempRegArray[35] = LAOldData;
                                 SimHistory.Push(TempRegArray);
                                 TempRegArray = nullptr;
-                                InstructionLoop();
+                                StoreType = -1; //Invalidate StoreType.
                                 Register[REG_PC] += 4; //Increment PC.
                                 AddressChange = true;
                             }
@@ -644,6 +656,10 @@ void RVSimulator::RVS_GUI()
                                     TempRegArray = SimHistory.Pop();
                                     if(TempRegArray)
                                     {
+                                        if(TempRegArray[33] != -1) //If a store had occurred, undo it.
+                                        {
+                                            Memory.Store(TempRegArray[34], TempRegArray[35], TempRegArray[33]);
+                                        }
                                         for(int i = 0; i < 33; ++i)
                                         {
                                             Register[i] = TempRegArray[i];

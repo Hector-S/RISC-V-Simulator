@@ -28,7 +28,7 @@ namespace MainData //Holds important data for main.cpp
 
 void DisplayTitle() //Displays the title.
 {
-    cout << "---| RISC-V Simulator V0.12 ( ";
+    cout << "---| RISC-V Simulator V0.13 ( ";
     if(!MainData::Simulator.TraceFileName.empty())
     {
         cout << "TF='" << MainData::Simulator.TraceFileName << "' ";

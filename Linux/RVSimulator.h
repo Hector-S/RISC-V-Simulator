@@ -96,8 +96,14 @@ class RVSimulator
 
         bool InstructionLoop(); //Does one iteration of the simulation.
         bool ReadFile(const char *MemoryFile);
-        void RVS_GUI();
         std::string RegValtoStr(uint8_t RegisterValue); //To generate string value based off given register.
+
+        //GUI Stuff
+        void RVS_GUI();
+        //This is for the GUI to track what memory locations were written to so that it can reverse memory to a previous state.
+        int StoreType = -1; //What kind of memory store was performed. -1 = no memory store happened.
+        uint32_t LastAddress = 0; //Last address a store wrote to.
+        uint32_t LAOldData = 0; //Data before the store occurred.
 };
 
 #endif // RVSIMULATOR_H_INCLUDED
