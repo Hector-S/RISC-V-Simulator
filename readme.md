@@ -13,6 +13,8 @@ apt-get install libsdl2-ttf-dev
 
 apt-get install libsdl2-image-dev
 
+Then you can use the makefile to compile the simulator.
+
 **---| How to Compile (Windows) |---**
 
 In the Windows directory there is a Code::Blocks project file.
