@@ -20,7 +20,7 @@ Open the file in Code::Blocks and hit the compile button. It should be that simp
 
 **---| Command Line Arguments |---**
 
-"-d" = Debug mode. Extra debug info will show.
+**"-d"** = Debug mode. Extra debug info will show.
 
 "-tf filename" = Trace file. All simulation terminal output will be redirected to a file with the name 'filename'.
 
