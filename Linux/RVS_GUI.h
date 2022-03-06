@@ -8,9 +8,9 @@
 
 #include <string> //For strings.
 
-#include <SDL.h> //Basic SDL
-#include <SDL_ttf.h> //For text.
-#include <SDL_image.h> //For image loading.
+#include <SDL2/SDL.h> //Basic SDL
+#include <SDL2/SDL_ttf.h> //For text.
+#include <SDL2/SDL_image.h> //For image loading.
 
 #define GUI_FONT "Media/consola.ttf" //Font used in gui.
 #define GUI_FONT_SIZE 116
