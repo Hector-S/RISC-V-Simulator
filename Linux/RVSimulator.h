@@ -78,9 +78,9 @@ class RVSimulator
 
         int Register[33]; //Registers They're signed by default.
         std::string TraceFileName; //If this is not empty, output will redirect to this file instead of the terminal.
-        bool DebugMode = true; //If true, will print debug info.
-        bool MemoryTraceFile = true; //If true, will print files of memory addresses with their content.
-        bool ProtectInstructions = true; //If enabled, instructions are stored in memory that can't be overwritten.
+        bool DebugMode = false; //If true, will print debug info.
+        bool MemoryTraceFile = false; //If true, will print files of memory addresses with their content.
+        bool ProtectInstructions = false; //If enabled, instructions are stored in memory that can't be overwritten.
         bool HexRegister = false; //Register values will be printed in hex if true. In decimal otherwise.
         bool SilentMode = false; //Instructions won't print output to terminal.
     private:
