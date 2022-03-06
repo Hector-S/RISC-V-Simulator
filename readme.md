@@ -19,28 +19,26 @@ In the Windows directory there is a Code::Blocks project file.
 Open the file in Code::Blocks and hit the compile button. It should be that simple.
 
 **---| Command Line Arguments |---**
+
 **"-d"** = Debug mode. Extra debug info will show.
 
 **"-tf filename"** = Trace file. All simulation terminal output will be redirected to a file with the name 'filename'.
 
 **"-mtf"** = Memory trace file. Virtual memory will be written to file/s with the name 'MemoryData_PX-X.txt'. Name/s of file/s are dependent on the number of threads used.
 
-**"-pi"** = Protect instructions. Instructions will be written to and read from memory that is separate from the memory they write to or read from.
-
+**"-pi"** = Protect instructions. Instructions will be written to and read from memory that is separate from the memory they write to or read from.  
 ^ If enabled, instructions can't be overwritten. If disabled, instructions can overwrite themselves in memory.
 
 **"-pc #"** = Set PC register. The PC register will be set to the hex number '#'.
 
 **"-sp #"** = Set SP register.
 
-**"-sfx .suf"** = Set suffix. Will only include files that end with '.suf' in the file select menu.
-
+**"-sfx .suf"** = Set suffix. Will only include files that end with '.suf' in the file select menu.  
 ^ Note: If you can't see suffixes in your normal file explorer, this may not show any files.
 
 **"-f filename"** = Set input file name. The file 'filename' will be selected for simulation.
 
-**"-s"** = Simulate. The simulator will completely run without opening the terminal menu.
-
+**"-s"** = Simulate. The simulator will completely run without opening the terminal menu.  
 ^ Useful to create several trace files of simulations (if using trace file command) with a script.
 
 **---| Credit |---**
