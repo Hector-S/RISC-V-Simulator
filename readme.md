@@ -2,6 +2,7 @@
 **A RISC-V Simulator for ECE 486/586**
 
 **---| How to Compile (Linux) |---**
+
 In the Linux directory, input the following into the terminal if you don't have SDL2 dev libraries/files installed.
 
 apt-cache search libsdl2            //See latest versions of sdl2
