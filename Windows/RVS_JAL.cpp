@@ -21,19 +21,26 @@ bool RVSimulator::JAL_Instruction(uint32_t Instruction)
     imm |= temp & 0x80000; //Get bit 20.
     imm *= 2; //Get multiples of 2 bytes.
 
-    if(rd != REG_ZERO)
+    if(imm != 0)
     {
-        Register[rd] = Register[REG_PC] + 4;
-    }
-    Register[REG_PC] += imm;
-    Register[REG_PC] -= 4; //We jumped, cancel increment of PC at end of main sim loop after this instruction.
-    if(!SilentMode) //Not in silent mode.
-    {
-        if(DebugMode)
+        if(rd != REG_ZERO)
         {
-            cout << "JAL " << RegtoStr(rd) << ",0x" << hex << imm << " | ";
+            Register[rd] = Register[REG_PC] + 4;
         }
-        cout << RegValtoStr(rd);
+        Register[REG_PC] += imm;
+        Register[REG_PC] -= 4; //We jumped, cancel increment of PC at end of main sim loop after this instruction.
+        if(!SilentMode) //Not in silent mode.
+        {
+            if(DebugMode)
+            {
+                cout << "JAL " << RegtoStr(rd) << ",0x" << hex << imm << " | ";
+            }
+            cout << RegValtoStr(rd);
+        }
+    }
+    else
+    {
+        cout << "WARNING-JAL: Branched to self. Instruction ignored." << endl;
     }
     return false;
 }
