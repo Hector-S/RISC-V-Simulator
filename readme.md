@@ -48,3 +48,5 @@ Created By: Hector Soto
 **---| Licensing/Software Used |---**
 
 The GUI for this simulator was made using SDL2. For more licensing info about SDL2 or additional libraries used, you can look at the LICENSE files in the main directory.
+
+The Inconsolata.ttf font was used for the GUI. Which is under the open font license: https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
