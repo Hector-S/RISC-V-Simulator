@@ -12,9 +12,9 @@
 #include <SDL2/SDL_ttf.h> //For text.
 #include <SDL2/SDL_image.h> //For image loading.
 
-#define GUI_FONT "Media/consola.ttf" //Font used in gui.
-#define GUI_FONT_SIZE 116
-#define GUI_FONT_SCALE 4 //Will effective divide size of font by 4 while keeping texture detail.
+#define GUI_FONT "Media/Inconsolata.ttf" //Font used in gui.
+#define GUI_FONT_SIZE 128
+#define GUI_FONT_SCALE 4 //Will effectively divide size of font by 4 while keeping texture detail.
 #define GUI_WIDTH 960 //Default window width.
 #define GUI_HEIGHT 960 //Default window height.
 #define HISTORY_MAX 999 //Maximum number of previous register states that can be saved.

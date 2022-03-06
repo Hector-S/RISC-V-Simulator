@@ -125,6 +125,7 @@ void RVSimulator::RVS_GUI()
     if(!Font) //If we failed to load the font.
     {
         cout << "GUI Error: Failed to load font'" << GUI_FONT << "'." << endl;
+        Exit();
         return;
     }
     UI_BOX Address[ADDR_ROWS + 3];

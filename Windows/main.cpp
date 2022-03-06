@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
         {
             MainData::Simulator.MemoryTraceFile = true;
         }
-        else if(ArgHolder.compare("-pi") == 0) //Enable memory trace file.
+        else if(ArgHolder.compare("-pi") == 0) //Enable instruction protection.
         {
             MainData::Simulator.ProtectInstructions = true;
         }
