@@ -462,6 +462,10 @@ void RVSimulator::RVS_GUI()
         {
             SDL_SetRenderDrawColor(Renderer, 255, 90, 90, 255); //Light red.
         }
+        else
+        {
+            SDL_SetRenderDrawColor(Renderer, 200, 150, 70, 255); //Light orange.
+        }
         MemPosition.Render(Renderer);
         SDL_SetRenderDrawColor(Renderer, 200, 150, 70, 255); //Set buttons to light orange.
         OffLeftArrow.Render(Renderer); OffRightArrow.Render(Renderer);
@@ -478,7 +482,7 @@ void RVSimulator::RVS_GUI()
         }
         else
         {
-            SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+            SDL_SetRenderDrawColor(Renderer, 200, 150, 70, 255); //Set to orange/
         }
         MemSwap.Render(Renderer);
 
