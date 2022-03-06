@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="RISC-V Simulator" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/RISC-V Simulator" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++17" />
+					<Add option="-m64" />
+					<Add directory="SDL/SDL2-2.0.20/x86_64-w64-mingw32/include/SDL2" />
+					<Add directory="SDL/SDL2_ttf-2.0.18/x86_64-w64-mingw32/include/SDL2" />
+					<Add directory="SDL/SDL2_image-2.0.5/x86_64-w64-mingw32/include/SDL2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static-libstdc++" />
+					<Add option="-m64" />
+					<Add option="-lmingw32" />
+					<Add option="-lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image" />
+					<Add directory="SDL/SDL2-2.0.20/x86_64-w64-mingw32/lib" />
+					<Add directory="SDL/SDL2_ttf-2.0.18/x86_64-w64-mingw32/lib" />
+					<Add directory="SDL/SDL2_image-2.0.5/x86_64-w64-mingw32/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="DirectoryList.cpp" />
+		<Unit filename="DirectoryList.h" />
+		<Unit filename="General.h" />
+		<Unit filename="RVS_GUI.cpp" />
+		<Unit filename="RVS_GUI.h" />
+		<Unit filename="RVS_JAL.cpp" />
+		<Unit filename="RVS_TypeB.cpp" />
+		<Unit filename="RVS_TypeI.cpp" />
+		<Unit filename="RVS_TypeR.cpp" />
+		<Unit filename="RVS_TypeS.cpp" />
+		<Unit filename="RVS_TypeU.cpp" />
+		<Unit filename="RVSimulator.cpp" />
+		<Unit filename="RVSimulator.h" />
+		<Unit filename="SimMemory.cpp" />
+		<Unit filename="SimMemory.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
