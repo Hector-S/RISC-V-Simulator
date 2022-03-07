@@ -57,9 +57,12 @@ int Init()
         return -5;
     }
     //Initiate settings.
-    //SDL_Surface *Icon = IMG_Load("Assets/Textures/Icon.png");
-    //SDL_SetWindowIcon(Window, Icon);
-    //SDL_FreeSurface(Icon);
+    SDL_Surface *Icon = IMG_Load("Media/RVS_Logo.png");
+    if(Icon)
+    {
+        SDL_SetWindowIcon(Window, Icon);
+        SDL_FreeSurface(Icon);
+    }
     SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND); //Activate color blending.
     SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "0" ); //Enable anti-aliasing.
     return 0; //Success.
