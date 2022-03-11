@@ -232,6 +232,10 @@ int main(int argc, char *argv[])
         {
             MainData::Simulator.DebugMode = true;
         }
+        else if(ArgHolder.compare("-h") == 0) //Set registers to be in hex format.
+        {
+            MainData::Simulator.HexRegister = true;
+        }
         else if(ArgHolder.compare("-tf") == 0) //Enable trace file.
         {
             if((i+1) < argc) //If the next argument exists, take it as a file name.
@@ -248,7 +252,7 @@ int main(int argc, char *argv[])
         {
             MainData::Simulator.ProtectInstructions = true;
         }
-        else if(ArgHolder.compare("-pc") == 0)
+        else if(ArgHolder.compare("-pc") == 0) //Set pc register.
         {
             if((i+1) < argc) //If the next argument exists, take it as register value.
             {
@@ -269,7 +273,7 @@ int main(int argc, char *argv[])
                 }
             }
         }
-        else if(ArgHolder.compare("-sp") == 0)
+        else if(ArgHolder.compare("-sp") == 0) //Set stack pointer register.
         {
             if((i+1) < argc) //If the next argument exists, take it as register value.
             {
@@ -341,6 +345,7 @@ int main(int argc, char *argv[])
                     MainData::Simulator.Simulate(MainData::FileName.c_str(), false);
                     MainData::Simulator.Register[REG_PC] = MainData::SetPC; //Reset PC.
                     MainData::Simulator.Register[REG_SP] = MainData::SetSP; //Reset SP.
+                    MainData::Simulator.Register[REG_RA] = 0; //Reset RA.
                     break;
                 case 3: //Settings.
                     SettingsMenu();
@@ -351,6 +356,7 @@ int main(int argc, char *argv[])
                     MainData::Simulator.Simulate(MainData::FileName.c_str(), true);
                     MainData::Simulator.Register[REG_PC] = MainData::SetPC; //Reset PC.
                     MainData::Simulator.Register[REG_SP] = MainData::SetSP; //Reset SP.
+                    MainData::Simulator.Register[REG_RA] = 0; //Reset RA.
                     break;
                 case 5: //Quit the program.
                     CLEAR_SCREEN;
