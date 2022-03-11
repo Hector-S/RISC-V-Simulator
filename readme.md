@@ -24,6 +24,8 @@ Open the file in Code::Blocks and hit the compile button. It should be that simp
 
 **"-d"** = Debug mode. Extra debug info will show.
 
+**"-h"** = Hex mode. Registers will display in hex format instead of decimal.
+
 **"-tf filename"** = Trace file. All simulation terminal output will be redirected to a file with the name 'filename'.
 
 **"-mtf"** = Memory trace file. Virtual memory will be written to file/s with the name 'MemoryData_PX-X.txt'. Name/s of file/s are dependent on the number of threads used.
