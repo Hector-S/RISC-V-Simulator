@@ -62,7 +62,7 @@ At the bottom left in grey and orange is the interactable portion of the GUI.
 ^ If it's grey, it can't be directly interacted with. If it's orange, it's a button.
 
 The first grey box in the address column shows the current offset of your view to the PC.  
-^ The two small orange arrow buttons to the right will increment and decrement this offset.
+^ The two small orange arrow buttons to the right will increment and decrement this offset.  
 ^ If your view is NOT locked and this offset is 0. Then the top row will be dark green.  
 ^ If your view is LOCKED, the offset will be equal to the address of the top row.
 
