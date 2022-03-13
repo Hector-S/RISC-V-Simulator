@@ -82,6 +82,14 @@ The orange box to the right of the "Lock" button shows the current memory offset
 
 The orange "Find" button will unlock your instruction/address view and set your view so that the address of the PC register is in the middle of your view.
 
+**---| The GUI (Shortcuts) |---**
+
+The left/right arrow keys will move the simulation forward and backward in time.  
+The '+' and '-' keys will increment/decrement the instruction/address view offset.  
+The '<' and '>' keys will increment/decrement the memory view offset.
+HOLDING the tab key will toggle the view of memory while it's held.
+
+
 **---| Credit |---**
 
 Created By: Hector Soto
