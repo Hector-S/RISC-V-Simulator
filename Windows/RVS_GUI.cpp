@@ -580,7 +580,7 @@ void RVSimulator::RVS_GUI()
                             if(GettingInput)
                             {
                                 GettingInput = false;
-                                try{TempInt = std::stoi(InputString.c_str(), nullptr, 16);}
+                                try{TempInt = std::stoll(InputString.c_str(), nullptr, 16);}
                                 catch(invalid_argument &){TempInt = MemoryPosition;}
                                 catch(out_of_range &){TempInt = MemoryPosition;}
                                 InputString.clear();
