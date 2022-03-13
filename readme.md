@@ -86,7 +86,7 @@ The orange "Find" button will unlock your instruction/address view and set your 
 
 The left/right arrow keys will move the simulation forward and backward in time.  
 The '+' and '-' keys will increment/decrement the instruction/address view offset.  
-The '<' and '>' keys will increment/decrement the memory view offset.
+The '<' and '>' keys will increment/decrement the memory view offset.  
 HOLDING the tab key will toggle the view of memory while it's held.
 
 
