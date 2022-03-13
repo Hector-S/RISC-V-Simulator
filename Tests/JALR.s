@@ -51,7 +51,6 @@ First:
 	.type	main, @function
 main:
 	addi	sp,sp,-16
-	li	ra,0
 	sw	ra,12(sp)
 	sw	s0,8(sp)
 	addi	s0,sp,16
