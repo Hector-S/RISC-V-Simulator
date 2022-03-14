@@ -119,7 +119,7 @@ void SetPCorSP(bool PC)
     cin >> ArgHolder; //Get input for data.
     try
     {
-        Choice = std::stoi(ArgHolder, nullptr, 16);
+        Choice = std::stoll(ArgHolder, nullptr, 16);
         if(PC)
         {
             MainData::Simulator.Register[REG_PC] = Choice;
@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
                 ++i; ArgHolder = argv[i];
                 try
                 {
-                    MainData::Simulator.Register[REG_PC] = std::stoi(ArgHolder, nullptr, 16);
+                    MainData::Simulator.Register[REG_PC] = std::stoll(ArgHolder, nullptr, 16);
                     MainData::SetPC = MainData::Simulator.Register[REG_PC];
                     cout << "PC set to: 0x" << hex << setw(8) << setfill('0') << std::stoi(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
                 }
@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
                 ++i; ArgHolder = argv[i];
                 try
                 {
-                    MainData::Simulator.Register[REG_SP] = std::stoi(ArgHolder, nullptr, 16);
+                    MainData::Simulator.Register[REG_SP] = std::stoll(ArgHolder, nullptr, 16);
                     MainData::SetSP = MainData::Simulator.Register[REG_SP];
                     cout << "SP set to: 0x" << hex << setw(8) << setfill('0') << std::stoi(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
                 }
