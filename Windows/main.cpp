@@ -252,6 +252,10 @@ int main(int argc, char *argv[])
         {
             MainData::Simulator.ProtectInstructions = true;
         }
+        else if(ArgHolder.compare("-si") == 0) //Enable silent mode.
+        {
+            MainData::Simulator.SilentMode = true;
+        }
         else if(ArgHolder.compare("-pc") == 0) //Set pc register.
         {
             if((i+1) < argc) //If the next argument exists, take it as register value.
