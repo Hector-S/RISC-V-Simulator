@@ -34,6 +34,8 @@ Open the file in Code::Blocks and hit the compile button. It should be that simp
 **"-pi"** = Protect instructions. Instructions will be written to and read from memory that is separate from the memory they write to or read from.  
 ^ If enabled, instructions can't be overwritten. If disabled, instructions can overwrite themselves in memory.
 
+**"-si"** = Silent mode. Simulation will run in silent mode.
+
 **"-pc #"** = Set PC register. The PC register will be set to the hex number '#'.
 
 **"-sp #"** = Set SP register.
