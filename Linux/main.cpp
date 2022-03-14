@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
                 {
                     MainData::Simulator.Register[REG_PC] = std::stoll(ArgHolder, nullptr, 16);
                     MainData::SetPC = MainData::Simulator.Register[REG_PC];
-                    cout << "PC set to: 0x" << hex << setw(8) << setfill('0') << std::stoi(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
+                    cout << "PC set to: 0x" << hex << setw(8) << setfill('0') << std::stoll(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
                 }
                 catch(invalid_argument &)
                 {
@@ -286,7 +286,7 @@ int main(int argc, char *argv[])
                 {
                     MainData::Simulator.Register[REG_SP] = std::stoll(ArgHolder, nullptr, 16);
                     MainData::SetSP = MainData::Simulator.Register[REG_SP];
-                    cout << "SP set to: 0x" << hex << setw(8) << setfill('0') << std::stoi(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
+                    cout << "SP set to: 0x" << hex << setw(8) << setfill('0') << std::stoll(ArgHolder, nullptr, 16) << endl; cout << dec  << setfill(' ');
                 }
                 catch(invalid_argument &)
                 {
