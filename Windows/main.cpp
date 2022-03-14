@@ -273,7 +273,7 @@ int main(int argc, char *argv[])
                 }
                 catch(out_of_range &)
                 {
-                    cout << "Failed to set PC. Was out of range." << endl;
+                    //cout << "Failed to set PC. Was out of range." << endl;
                 }
             }
         }
@@ -294,7 +294,7 @@ int main(int argc, char *argv[])
                 }
                 catch(out_of_range &)
                 {
-                    cout << "Failed to set SP. Was out of range." << endl;
+                    //cout << "Failed to set SP. Was out of range." << endl;
                 }
             }
         }
