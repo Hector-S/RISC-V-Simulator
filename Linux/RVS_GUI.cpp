@@ -102,7 +102,7 @@ void RVSimulator::RVS_GUI()
     int quit = 0; //1 = End program.
     int MouseX = 0, MouseY = 0; //Mouse position.
     stringstream temp; //For simpler string manipulation.
-    bool AddressChange = false; //If true, need to update address + instruction data info.
+    bool AddressChange = true; //If true, need to update address + instruction data info.
     bool OffsetLock = false; //If true, will lock address view to current address offset.
     bool MemorySwap = false; //If true, memory locations will be shown instead of the data at the memory location.
     bool MSBHold = false; //If true. the tab button is being held down.
@@ -249,72 +249,6 @@ void RVSimulator::RVS_GUI()
     MemSwap.x = MemRight.x + MemRight.w;
     MemSwap.y = Instruction[ADDR_ROWS].y + (GUI_HEIGHT / (ADDR_ROWS + 3))*2;
     MemSwap.Font = &Font;
-
-    Address[0].SetText("Address");
-    Instruction[0].SetText("Instruction");
-    Decoded[0].SetText("Decoded");
-    RegisterData1[0].SetText("[x0-x15] Regs [x16-x31]");
-    OffLeftArrow.SetText("<"); OffRightArrow.SetText(">"); PCLock.SetText("Lock");
-    Rewind.SetText("<"); Forward.SetText(">"); Find.SetText("Find"); HistoryCount.SetText(to_string(SimHistory.Size));
-    MemLeft.SetText("<"); MemRight.SetText(">");
-    if(MemorySwap)
-    {
-        MemSwap.SetText("ADDR"); MemoryData[0].SetText("Memory Address");
-    }
-    else
-    {
-        MemSwap.SetText("DATA"); MemoryData[0].SetText("Memory Data");
-    }
-    temp << "0x" << hex << setfill('0') << setw(8) << AddressOffset; //Current address offset.
-    Address[ADDR_ROWS + 1].SetText(temp.str());
-    temp.str(std::string()); //Clear temp stream.
-    temp << "0x" << hex << setfill('0') << setw(8) << Register[REG_PC]; //PC Register address.
-    Address[ADDR_ROWS + 2].SetText(temp.str());
-    temp.str(std::string()); //Clear temp stream.
-    if(!GettingInput)
-    {
-        temp << "0x" << hex << setfill('0') << setw(8) << MemoryPosition; //Memory position address.
-        MemPosition.SetText(temp.str());
-        temp.str(std::string()); //Clear temp stream.
-    }
-    else
-    {
-        MemPosition.SetText(InputString);
-    }
-    for(int i = 1; i < ADDR_ROWS + 1; ++i) //Update gui text.
-    {
-        temp << "0x" << hex << setfill('0') << setw(8) << (AddressView + 4*(i-1));
-        Address[i].SetText(temp.str());
-        temp.str(std::string()); //Clear temp stream.
-        if(ProtectInstructions)
-        {
-            InstructionLoaded = InstructionMemory.Load((int) AddressView + 4*(i-1), LS_WORD);
-        }
-        else
-        {
-            InstructionLoaded = Memory.Load((int) AddressView + 4*(i-1), LS_WORD);
-        }
-        temp << "0x" << hex << setfill('0') << setw(8) << InstructionLoaded;
-        Instruction[i].SetText(temp.str());
-        Decoded[i].SetText(DecodeInstruction(InstructionLoaded));
-        if(i < REGS_ROWS + 1)
-        {
-            RegisterData1[i].SetText(RegValtoStr(i - 1));
-            RegisterData2[i - 1].SetText(RegValtoStr(i + 15));
-        }
-        temp.str(std::string()); //Clear temp stream.
-    }
-    for(int i = 1; i < ADDR_ROWS + 3; ++i)
-    {
-        if(MemorySwap)
-        {
-            MemoryData[i].SetText(ValtoStr(MemoryPosition + 4*(i - 1)));
-        }
-        else
-        {
-            MemoryData[i].SetText(ValtoStr(Memory.Load(MemoryPosition + 4*(i - 1), LS_WORD)));
-        }
-    }
 
     while(!quit)
     {
