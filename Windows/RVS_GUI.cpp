@@ -968,12 +968,14 @@ string DJALI(uint32_t Instruction)
     uint8_t rd = (Instruction >> 7) & 0x1F; //Next 5 bits.
     uint32_t temp = (Instruction >> 12) & 0xFFFFF; //Next 20 bits.
     int32_t imm = 0; //The signed immediate.
-    imm = temp >> 9; // First 10 bits.
+    imm = (temp >> 9) & 0x3FF; // First 10 bits.
     imm |= ((temp >> 8) & 0x1) << 10; //Get bit 11.
     imm |= (temp & 0x0FF) << 11; //Get next 8 bits
     imm |= temp & 0x80000; //Get bit 20.
+    imm = imm << 12;
+    imm = imm >> 12; //Sign extend immediate.
     imm *= 2; //Get multiples of 2 bytes.
-    ReturnString << "JAL " << RegtoStr(rd) << ",0x" << hex << imm;
+    ReturnString << "JAL " << RegtoStr(rd) << ',' << dec << imm;
 
     return ReturnString.str();
 }
