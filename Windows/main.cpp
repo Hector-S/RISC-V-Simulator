@@ -80,7 +80,7 @@ void SelectFileMenu() //User selects a file.
     while(true)
     {
         DisplayTitle();
-        cout << "Select a file." << endl;
+        cout << "Select a file." << dec << endl;
         MainData::Directory.Display();
         cout << "Choice: ";
         cin >> Choice;
